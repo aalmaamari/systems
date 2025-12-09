@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kattara Systems | Heritage Decoded</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- English Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Arabic Fonts: Amiri (Serif/Heritage), Tajawal (Sans/Tech) -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        wootz: {
+                            base: '#1a1a1d',
+                            light: '#2d2d32',
+                            dark: '#0f0f12',
+                        },
+                        electric: {
+                            DEFAULT: '#00f0ff', // Neon Blue
+                            dim: 'rgba(0, 240, 255, 0.1)',
+                        },
+                        bronze: {
+                            DEFAULT: '#c5a059', // Antique Bronze
+                            light: '#e6c27c',
+                            dark: '#8a6e3e',
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Cinzel', 'serif'],
+                        mono: ['Rajdhani', 'sans-serif'],
+                        // Arabic Font Stack
+                        'ar-serif': ['Amiri', 'serif'],
+                        'ar-sans': ['Tajawal', 'sans-serif'],
+                    },
+                    backgroundImage: {
+                        'wootz-pattern': "repeating-linear-gradient(45deg, #1a1a1d 0px, #1a1a1d 2px, #1f1f22 2px, #1f1f22 4px)",
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Styles for Effects */
+        body {
+            background-color: #0f0f12;
+            color: #e2e2e2;
+        }
+
+        .wootz-texture {
+            background-image: repeating-linear-gradient(
+                45deg,
+                rgba(255, 255, 255, 0.01) 0px,
+                rgba(255, 255, 255, 0.01) 1px,
+                transparent 1px,
+                transparent 4px
+            );
+        }
+
+        .text-glow {
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+        }
+        
+        .bronze-glow {
+            text-shadow: 0 0 15px rgba(197, 160, 89, 0.3);
+        }
+
+        .card-hover:hover {
+            border-color: #00f0ff;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.15);
+            transform: translateY(-5px);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f0f12; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2d2d32; 
+            border: 1px solid #c5a059;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #c5a059; 
+        }
+
+        /* Canvas positioning */
+        #hero-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.6;
+        }
+
+        /* Language visibility utilities */
+        html[lang="en"] .lang-ar { display: none !important; }
+        html[lang="ar"] .lang-en { display: none !important; }
+        
+        /* Font switching based on lang */
+        html[lang="ar"] .font-serif { font-family: 'Amiri', serif !important; }
+        html[lang="ar"] .font-mono { font-family: 'Tajawal', sans-serif !important; }
+        
+        /* Adjust letter spacing for Arabic (usually needs less tracking than English caps) */
+        html[lang="ar"] .tracking-widest { letter-spacing: 0em !important; }
+        html[lang="ar"] .tracking-wide { letter-spacing: 0em !important; }
+    </style>
+</head>
+<body class="wootz-texture font-mono overflow-x-hidden selection:bg-bronze selection:text-wootz-dark transition-colors duration-300">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 bg-wootz-dark/80 backdrop-blur-md border-b border-white/5 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <!-- Logo Mark -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="relative w-8 h-8 flex items-center justify-center">
+                    <!-- The Vertical Hilt (Alif) -->
+                    <div class="absolute h-full w-[2px] bg-bronze group-hover:bg-electric transition-colors duration-500"></div>
+                    <!-- The Curve (Blade) -->
+                    <svg class="absolute w-full h-full text-white/50 group-hover:text-electric transition-colors duration-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M2 22C12 22 22 12 22 2" />
+                    </svg>
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-serif font-bold text-lg tracking-widest text-white group-hover:text-electric transition-colors">
+                        <span class="lang-en">KATTARA</span>
+                        <span class="lang-ar text-xl">الكتارة</span>
+                    </span>
+                    <span class="text-[0.6rem] tracking-[0.3em] text-bronze uppercase">
+                        <span class="lang-en">Systems</span>
+                        <span class="lang-ar tracking-normal">للأنظمة</span>
+                    </span>
+                </div>
+            </a>
+
+            <!-- Desktop Nav -->
+            <div class="hidden md:flex items-center gap-10">
+                <a href="#manifesto" class="text-sm tracking-widest text-gray-400 hover:text-bronze transition-colors uppercase">
+                    <span class="lang-en">Manifesto</span>
+                    <span class="lang-ar text-base">الرسالة</span>
+                </a>
+                <a href="#values" class="text-sm tracking-widest text-gray-400 hover:text-bronze transition-colors uppercase">
+                    <span class="lang-en">Our Anatomy</span>
+                    <span class="lang-ar text-base">قيمنا</span>
+                </a>
+                
+                <!-- Language Toggle -->
+                <button onclick="toggleLanguage()" class="text-xs font-bold text-electric border border-electric/30 px-3 py-1 hover:bg-electric/10 transition-colors">
+                    <span class="lang-en">AR</span>
+                    <span class="lang-ar">EN</span>
+                </button>
+
+                <a href="#contact" class="px-6 py-2 border border-bronze text-bronze hover:bg-bronze hover:text-wootz-dark transition-all duration-300 uppercase text-xs tracking-widest font-bold">
+                    <span class="lang-en">Initialize</span>
+                    <span class="lang-ar text-base">بدء الاتصال</span>
+                </a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <div class="md:hidden flex items-center gap-4">
+                <button onclick="toggleLanguage()" class="text-xs font-bold text-electric border border-electric/30 px-2 py-1">
+                    <span class="lang-en">AR</span>
+                    <span class="lang-ar">EN</span>
+                </button>
+                <button class="text-bronze" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+                    <i data-lucide="menu"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-wootz-dark border-b border-bronze/20 p-6 absolute w-full">
+            <div class="flex flex-col gap-6 items-center">
+                <a href="#manifesto" class="text-gray-400 hover:text-bronze uppercase tracking-widest">
+                    <span class="lang-en">Manifesto</span>
+                    <span class="lang-ar">الرسالة</span>
+                </a>
+                <a href="#values" class="text-gray-400 hover:text-bronze uppercase tracking-widest">
+                    <span class="lang-en">Our Anatomy</span>
+                    <span class="lang-ar">قيمنا</span>
+                </a>
+                <a href="#contact" class="text-bronze uppercase tracking-widest font-bold">
+                    <span class="lang-en">Initialize</span>
+                    <span class="lang-ar">بدء الاتصال</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative h-screen w-full flex items-center justify-center overflow-hidden bg-wootz-dark">
+        <!-- Canvas Background for Mathematical Curve -->
+        <canvas id="hero-canvas"></canvas>
+        
+        <div class="relative z-10 text-center px-4 max-w-5xl mx-auto">
+            <div class="mb-6 flex justify-center">
+                <div class="h-24 w-[1px] bg-gradient-to-b from-transparent via-bronze to-transparent"></div>
+            </div>
+            
+            <h1 class="font-serif text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 leading-tight tracking-tight bronze-glow">
+                <span class="lang-en">
+                    HERITAGE <span class="text-transparent bg-clip-text bg-gradient-to-r from-bronze to-white">DECODED.</span><br>
+                    FUTURES <span class="text-transparent bg-clip-text bg-gradient-to-r from-electric to-white text-glow">FORGED.</span>
+                </span>
+                <span class="lang-ar leading-normal">
+                    نفهم <span class="text-transparent bg-clip-text bg-gradient-to-l from-bronze to-white">الآن</span><br>
+                    ونصنع <span class="text-transparent bg-clip-text bg-gradient-to-l from-electric to-white text-glow">المستقبل</span>
+                </span>
+            </h1>
+            
+            <p class="font-mono text-lg md:text-xl text-gray-400 max-w-2xl mx-auto tracking-wide leading-relaxed mb-10">
+                <span class="lang-en">
+                    From the Omani Empire to the digital horizon. <br>
+                    We architect systems of sovereignty for the modern age.
+                </span>
+                <span class="lang-ar text-xl">
+                    من وحي الإمبراطورية العمانية.. إلى آفاق العصر الرقمي.<br>
+                    نُشيّد أنظمة السيادة الرقمية للعالم الحديث.
+                </span>
+            </p>
+
+            <div class="flex flex-col md:flex-row gap-6 justify-center items-center">
+                <a href="#manifesto" class="group relative px-8 py-3 bg-transparent overflow-hidden">
+                    <div class="absolute inset-0 w-3 bg-electric transition-all duration-[250ms] ease-out group-hover:w-full opacity-10"></div>
+                    <div class="absolute inset-0 border border-electric/30 group-hover:border-electric transition-colors"></div>
+                    <span class="relative text-electric group-hover:text-white font-bold tracking-[0.2em] text-sm uppercase">
+                        <span class="lang-en">Explore The Code</span>
+                        <span class="lang-ar">اكتشف الشفرة</span>
+                    </span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-10  transform -translate-x-1/2 flex flex-col items-center justify-center gap-2 opacity-50 animate-bounce">
+            <span class="text-[0.6rem] uppercase tracking-[0.3em] text-bronze">
+                <span class="lang-en">Scroll</span>
+                <span class="lang-ar tracking-normal">تمرير</span>
+            </span>
+            <div class="w-[1px] h-10 bg-bronze"></div>
+        </div>
+    </section>
+
+    <!-- The Manifesto -->
+    <section id="manifesto" class="py-24 md:py-32 bg-wootz-base relative border-t border-white/5">
+        <div class="absolute top-0 ltr:left-0 rtl:right-0 w-32 h-32 border-t ltr:border-l rtl:border-r border-bronze/20"></div>
+        <div class="absolute bottom-0 ltr:right-0 rtl:left-0 w-32 h-32 border-b ltr:border-r rtl:border-l border-electric/20"></div>
+
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="flex items-center gap-4 mb-12">
+                <span class="h-[1px] w-12 bg-bronze"></span>
+                <span class="text-bronze font-mono uppercase tracking-[0.3em] text-sm">
+                    <span class="lang-en">The Manifesto</span>
+                    <span class="lang-ar text-lg tracking-normal">الرسالة</span>
+                </span>
+            </div>
+
+            <div class="prose prose-invert prose-lg max-w-none">
+                <p class="font-serif text-2xl md:text-4xl leading-relaxed text-gray-200 mb-8 ltr:border-l-4 rtl:border-r-4 border-bronze ltr:pl-6 rtl:pr-6">
+                    <span class="lang-en">
+                        "In the golden age of the Omani Empire, the Kattara was never merely a weapon. It was a sophisticated instrument of identity—a unique synthesis of global steel and local mastery."
+                    </span>
+                    <span class="lang-ar leading-loose">
+                        "في العصر الذهبي للإمبراطورية العمانية، لم تكن 'الكتارة' مجرد سلاح، بل كانت رمزاً رفيعاً للهوية.. مزيجاً فريداً من الفولاذ العالمي والبراعة المحلية."
+                    </span>
+                </p>
+                
+                <div class="grid md:grid-cols-2 gap-12 font-mono text-gray-400 leading-7">
+                    <div>
+                        <p class="mb-6">
+                            <span class="lang-en">
+                                It was the physical manifestation of high status, international influence, and the power to connect worlds. The merchant elite and sea captains who carried it understood that true power lies in the ability to navigate currents—both oceanic and cultural.
+                            </span>
+                            <span class="lang-ar text-lg">
+                                كانت تجسيداً ملموساً للمكانة الرفيعة والنفوذ الدولي والقدرة على ربط العوالم. لقد أدرك قادة البحار وصفوة التجار الذين حملوها أن القوة الحقيقية تكمن في القدرة على تطويع التيارات.. سواء كانت أمواج المحيط أو تيارات الحضارة.
+                            </span>
+                        </p>
+                    </div>
+                    <div>
+                        <p class="mb-6">
+                            <span class="lang-en">
+                                <strong class="text-electric">Kattara Systems</strong> reclaims this lineage. We go deep into the roots of culture to engineer the code of the future. We are the architects of new digital realities, creating systems that serve as the modern badge of authority for forward-thinking enterprises.
+                            </span>
+                            <span class="lang-ar text-lg">
+                                واليوم، تستعيد <strong class="text-electric">الكتارة للأنظمة</strong> هذا الإرث العريق. نحن نغوص في جذور الأصالة لنصيغ شفرة المستقبل. نحن مهندسو الواقع الرقمي الجديد، نبتكر أنظمةً تُمثّل "شارة القيادة" الحديثة للمؤسسات ذات الرؤية الثاقبة.
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="mt-12 p-8 border border-white/5 bg-white/[0.02] backdrop-blur-sm">
+                    <p class="text-center font-serif text-xl italic text-bronze">
+                        <span class="lang-en">We leverage the wisdom of the past to write the source code for a better tomorrow.</span>
+                        <span class="lang-ar">نستلهمُ حكمة الماضي.. ونفتح الأشرعة.</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Anatomy (Core Values) -->
+    <section id="values" class="py-24 bg-wootz-dark relative">
+        <!-- Background decorative grid -->
+        <div class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="text-center mb-20">
+                <h2 class="font-serif text-4xl text-white mb-4">
+                    <span class="lang-en">The Anatomy of Innovation</span>
+                    <span class="lang-ar">تشريح الابتكار</span>
+                </h2>
+                <div class="w-24 h-[2px] bg-electric mx-auto"></div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                
+                <!-- Card 1: The Steel -->
+                <div class="card-hover bg-wootz-light/50 border border-white/5 p-8 group transition-all duration-500 relative overflow-hidden">
+                    <div class="absolute top-0 ltr:left-0 rtl:right-0 w-full h-1 bg-gradient-to-r from-transparent via-gray-500 to-transparent group-hover:via-white transition-all"></div>
+                    
+                    <div class="mb-6 text-gray-400 group-hover:text-white transition-colors">
+                        <!-- Icon: Layer/Stack -->
+                        <i data-lucide="layers" class="w-10 h-10"></i>
+                    </div>
+
+                    <h3 class="text-2xl font-serif text-white mb-2">
+                        <span class="lang-en">I. The Steel</span>
+                        <span class="lang-ar">١. الجوهر (الفولاذ)</span>
+                    </h3>
+                    <h4 class="text-xs font-mono uppercase tracking-widest text-gray-500 mb-6">
+                        <span class="lang-en">Resilient Sovereignty</span>
+                        <span class="lang-ar">السيادة الراسخة</span>
+                    </h4>
+
+                    <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                        <span class="lang-en">
+                            Inspired by Wootz steel's uncompromising integrity. We architect systems using "ultimate" frameworks—enterprise-grade, secure, and infinitely scalable.
+                        </span>
+                        <span class="lang-ar text-base">
+                            مستوحى من فولاذ "الجوهر" الذي لا يلين. نبني أنظمة محصنة بأعلى المعايير المؤسسية، آمنة، وقابلة للتوسع بلا حدود.
+                        </span>
+                    </p>
+                    
+                    <div class="pt-4 border-t border-white/10">
+                        <span class="text-electric text-xs tracking-widest uppercase">
+                            <span class="lang-en">Immutable Core</span>
+                            <span class="lang-ar">نواة لا تتزعزع</span>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Card 2: The Hilt -->
+                <div class="card-hover bg-wootz-light/50 border border-white/5 p-8 group transition-all duration-500 relative overflow-hidden">
+                    <div class="absolute top-0 ltr:left-0 rtl:right-0 w-full h-1 bg-gradient-to-r from-transparent via-bronze to-transparent group-hover:via-yellow-400 transition-all"></div>
+                    
+                    <div class="mb-6 text-bronze group-hover:text-white transition-colors">
+                        <!-- Icon: Pillar/Column -->
+                        <i data-lucide="column-spacing" class="w-10 h-10"></i>
+                    </div>
+
+                    <h3 class="text-2xl font-serif text-bronze mb-2">
+                        <span class="lang-en">II. The Hilt</span>
+                        <span class="lang-ar">٢. المقبض</span>
+                    </h3>
+                    <h4 class="text-xs font-mono uppercase tracking-widest text-bronze/60 mb-6">
+                        <span class="lang-en">Empowered Mastery</span>
+                        <span class="lang-ar">التمكين والبراعة</span>
+                    </h4>
+
+                    <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                        <span class="lang-en">
+                            The guardless grip demanded skill. Our UX strips away clutter, offering leaders direct, intuitive control over complex systems.
+                        </span>
+                        <span class="lang-ar text-base">
+                            تطلّب المقبضُ المجرد مهارةً فائقة. وكذلك واجهاتنا؛ نُزيل منها التعقيد لنمنح القادة تحكماً مباشراً وبديهياً في أعقد الأنظمة.
+                        </span>
+                    </p>
+                    
+                    <div class="pt-4 border-t border-white/10">
+                        <span class="text-bronze text-xs tracking-widest uppercase">
+                            <span class="lang-en">Human Interface</span>
+                            <span class="lang-ar">اتصال إنساني مباشر</span>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Card 3: The Curve -->
+                <div class="card-hover bg-wootz-light/50 border border-white/5 p-8 group transition-all duration-500 relative overflow-hidden">
+                    <div class="absolute top-0 ltr:left-0 rtl:right-0 w-full h-1 bg-gradient-to-r from-transparent via-electric to-transparent group-hover:via-cyan-300 transition-all"></div>
+                    
+                    <div class="mb-6 text-electric group-hover:text-white transition-colors">
+                        <!-- Icon: Activity/Curve -->
+                        <i data-lucide="activity" class="w-10 h-10"></i>
+                    </div>
+
+                    <h3 class="text-2xl font-serif text-electric mb-2">
+                        <span class="lang-en">III. The Curve</span>
+                        <span class="lang-ar">٣. المنحنى</span>
+                    </h3>
+                    <h4 class="text-xs font-mono uppercase tracking-widest text-electric/60 mb-6">
+                        <span class="lang-en">Fluid Synthesis</span>
+                        <span class="lang-ar">التناغم الانسيابي</span>
+                    </h4>
+
+                    <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                        <span class="lang-en">
+                            The blade's arc symbolized the flow of ideas. We specialize in deep interoperability, integrating Legacy, Cloud, and AI into a seamless stream.
+                        </span>
+                        <span class="lang-ar text-base">
+                            ترمز انحناءة النصل لتدفق الأفكار. نحن متخصصون في التناغم التقني؛ ندمج الأنظمة القديمة والسحابية والذكاء الاصطناعي في تيار واحد متصل.
+                        </span>
+                    </p>
+                    
+                    <div class="pt-4 border-t border-white/10">
+                        <span class="text-electric text-xs tracking-widest uppercase">
+                            <span class="lang-en">Infinite Arc</span>
+                            <span class="lang-ar">أفق لا نهائي</span>
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Visual Break / Tech Quote -->
+    <section class="py-20 bg-black flex items-center justify-center border-y border-white/5">
+        <div class="text-center px-4">
+            <p class="font-mono text-electric text-sm md:text-base tracking-[0.2em] mb-2 glitch-effect">
+                &lt;SYSTEM_STATUS: OPTIMAL&gt;
+            </p>
+            <h2 class="font-serif text-3xl md:text-5xl text-white">
+                <span class="lang-en">
+                    "We do not simply build infrastructure;<br>
+                    <span class="text-gray-600">we forge high-precision capability."</span>
+                </span>
+                <span class="lang-ar leading-normal">
+                    "نحن لا نبني أنظمة آمنة فحسب؛<br>
+                    <span class="text-gray-600">بل نصوغُ قدراتٍ عالية الدقة."</span>
+                </span>
+            </h2>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 bg-wootz-base relative">
+        <div class="max-w-3xl mx-auto px-6">
+            <div class="border border-bronze/30 p-1 md:p-2 bg-wootz-dark/50">
+                <div class="border border-bronze/30 p-8 md:p-12 text-center relative overflow-hidden">
+                    
+                    <!-- Decorative Corners -->
+                    <div class="absolute top-0 ltr:left-0 rtl:right-0 w-4 h-4 border-t-2 ltr:border-l-2 rtl:border-r-2 border-bronze"></div>
+                    <div class="absolute top-0 ltr:right-0 rtl:left-0 w-4 h-4 border-t-2 ltr:border-r-2 rtl:border-l-2 border-bronze"></div>
+                    <div class="absolute bottom-0 ltr:left-0 rtl:right-0 w-4 h-4 border-b-2 ltr:border-l-2 rtl:border-r-2 border-bronze"></div>
+                    <div class="absolute bottom-0 ltr:right-0 rtl:left-0 w-4 h-4 border-b-2 ltr:border-r-2 rtl:border-l-2 border-bronze"></div>
+
+                    <h2 class="font-serif text-3xl text-white mb-6">
+                        <span class="lang-en">Reshape Your Industry</span>
+                        <span class="lang-ar">أعد تشكيل قطاعك</span>
+                    </h2>
+                    <p class="font-mono text-gray-400 mb-10 max-w-lg mx-auto">
+                        <span class="lang-en">Initiate a secure channel with Kattara Systems. Secure your digital sovereignty today.</span>
+                        <span class="lang-ar text-lg">بادر بفتح قناة آمنة مع الكتارة للأنظمة. أمّن سيادتك الرقمية اليوم.</span>
+                    </p>
+
+                    <form class="space-y-4 ltr:text-left rtl:text-right max-w-md mx-auto">
+                        <div>
+                            <label class="block text-xs uppercase tracking-widest text-bronze mb-2">
+                                <span class="lang-en">Identifier</span>
+                                <span class="lang-ar">المعرف (الاسم)</span>
+                            </label>
+                            <input type="text" class="w-full bg-wootz-base border border-white/10 p-3 text-white focus:border-electric focus:outline-none focus:bg-wootz-light transition-all font-mono" placeholder="...">
+                        </div>
+                        <div>
+                            <label class="block text-xs uppercase tracking-widest text-bronze mb-2">
+                                <span class="lang-en">Signal</span>
+                                <span class="lang-ar">الإشارة (البريد)</span>
+                            </label>
+                            <input type="email" class="w-full bg-wootz-base border border-white/10 p-3 text-white focus:border-electric focus:outline-none focus:bg-wootz-light transition-all font-mono" placeholder="...">
+                        </div>
+                        <button type="button" class="w-full bg-bronze/10 border border-bronze text-bronze py-4 font-bold uppercase tracking-widest hover:bg-bronze hover:text-wootz-dark transition-all duration-300 mt-4">
+                            <span class="lang-en">Establish Connection</span>
+                            <span class="lang-ar">تأسيس الاتصال</span>
+                        </button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-wootz-dark border-t border-white/5 py-12">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-2">
+                 <div class="relative w-6 h-6 flex items-center justify-center">
+                    <div class="absolute h-full w-[2px] bg-bronze"></div>
+                    <svg class="absolute w-full h-full text-white/50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M2 22C12 22 22 12 22 2" />
+                    </svg>
+                </div>
+                <span class="font-serif text-lg text-white">
+                    <span class="lang-en">KATTARA SYSTEMS</span>
+                    <span class="lang-ar">الكتارة للأنظمة</span>
+                </span>
+            </div>
+            
+            <!-- <div class="flex gap-8 text-xs font-mono tracking-widest text-gray-500 uppercase">
+                <a href="#" class="hover:text-electric transition-colors">
+                    <span class="lang-en">Privacy Protocol</span>
+                    <span class="lang-ar">بروتوكول الخصوصية</span>
+                </a>
+                <a href="#" class="hover:text-electric transition-colors">
+                    <span class="lang-en">Terms of Command</span>
+                    <span class="lang-ar">شروط القيادة</span>
+                </a>
+            </div> -->
+
+            <div class="text-xs font-mono text-gray-600">
+                <span class="lang-en">&copy; 2025. Muscat.</span>
+                <span class="lang-ar">&copy; ٢٠٢٥. مسقط.</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Language Toggle Logic
+        function toggleLanguage() {
+            const html = document.documentElement;
+            const currentLang = html.getAttribute('lang');
+            
+            if (currentLang === 'en') {
+                html.setAttribute('lang', 'ar');
+                html.setAttribute('dir', 'rtl');
+            } else {
+                html.setAttribute('lang', 'en');
+                html.setAttribute('dir', 'ltr');
+            }
+        }
+
+        // Canvas Animation - The Mathematical Curve
+        const canvas = document.getElementById('hero-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let particles = [];
+        let time = 0;
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * width;
+                this.y = height + Math.random() * 100; // Start below screen
+                this.speed = 1 + Math.random() * 2;
+                this.offset = Math.random() * 100;
+                this.opacity = Math.random() * 0.5;
+                this.color = Math.random() > 0.9 ? '#c5a059' : '#00f0ff'; // Bronze or Electric
+            }
+
+            update() {
+                this.y -= this.speed;
+                // Mathematical Curve Logic: Sine wave trajectory
+                this.x += Math.sin((this.y + time * 50) / 200) * 1.5; 
+
+                if (this.y < -10) this.reset();
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = this.opacity;
+                ctx.arc(this.x, this.y, Math.random() * 1.5, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        // Create main sweeping arcs
+        function drawArcs() {
+            ctx.shadowBlur = 20;
+            ctx.shadowColor = "#00f0ff";
+            
+            // The "Main Blade" Arc
+            ctx.beginPath();
+            ctx.strokeStyle = "rgba(0, 240, 255, 0.15)";
+            ctx.lineWidth = 2;
+            
+            // Dynamic Bezier Curve - Direction aware? 
+            // The math is abstract so it works for both LTR/RTL aesthetically
+            const startX = width * 0.1;
+            const startY = height * 0.9;
+            const cp1x = width * 0.4 + Math.sin(time/20)*50; 
+            const cp1y = height * 0.8;
+            const cp2x = width * 0.6;
+            const cp2y = height * 0.2;
+            const endX = width * 0.9;
+            const endY = height * 0.1;
+
+            ctx.moveTo(startX, startY);
+            ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, endX, endY);
+            ctx.stroke();
+
+            // Echo Curve (Bronze)
+            ctx.shadowColor = "#c5a059";
+            ctx.beginPath();
+            ctx.strokeStyle = "rgba(197, 160, 89, 0.1)";
+            ctx.lineWidth = 1;
+            ctx.moveTo(startX + 20, startY + 20);
+            ctx.bezierCurveTo(cp1x + 20, cp1y + 20, cp2x - 20, cp2y + 20, endX - 20, endY + 20);
+            ctx.stroke();
+            
+            ctx.shadowBlur = 0;
+        }
+
+        // Initialize particles
+        for (let i = 0; i < 100; i++) {
+            particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            
+            // Draw gradient background overlay
+            let gradient = ctx.createLinearGradient(0, 0, width, height);
+            gradient.addColorStop(0, "rgba(15, 15, 18, 1)");
+            gradient.addColorStop(0.5, "rgba(15, 15, 18, 0.8)");
+            gradient.addColorStop(1, "rgba(15, 15, 18, 1)");
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, width, height);
+
+            time += 0.01;
+
+            drawArcs();
+
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        // Smooth Scroll Logic
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+    </script>
+</body>
+</html>
