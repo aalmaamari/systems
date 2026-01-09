@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kattara Systems | Heritage Decoded</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -124,6 +126,8 @@
         html[lang="ar"] .tracking-widest { letter-spacing: 0em !important; }
         html[lang="ar"] .tracking-wide { letter-spacing: 0em !important; }
     </style>
+
+    
 </head>
 <body class="wootz-texture font-mono overflow-x-hidden selection:bg-bronze selection:text-wootz-dark transition-colors duration-300">
 
@@ -488,16 +492,16 @@
                                 <span class="lang-en">Identifier</span>
                                 <span class="lang-ar">المعرف (الاسم)</span>
                             </label>
-                            <input type="text" class="w-full bg-wootz-base border border-white/10 p-3 text-white focus:border-electric focus:outline-none focus:bg-wootz-light transition-all font-mono" placeholder="...">
+                            <input id="contact-identifier" type="text" class="w-full bg-wootz-base border border-white/10 p-3 text-white focus:border-electric focus:outline-none focus:bg-wootz-light transition-all font-mono" placeholder="Name or Organization / الاسم أو المؤسسة">
                         </div>
                         <div>
                             <label class="block text-xs uppercase tracking-widest text-bronze mb-2">
                                 <span class="lang-en">Signal</span>
                                 <span class="lang-ar">الإشارة (البريد)</span>
                             </label>
-                            <input type="email" class="w-full bg-wootz-base border border-white/10 p-3 text-white focus:border-electric focus:outline-none focus:bg-wootz-light transition-all font-mono" placeholder="...">
+                            <input id="contact-signal" type="email" class="w-full bg-wootz-base border border-white/10 p-3 text-white focus:border-electric focus:outline-none focus:bg-wootz-light transition-all font-mono" placeholder="Email Address / البريد الإلكتروني">
                         </div>
-                        <button type="button" class="w-full bg-bronze/10 border border-bronze text-bronze py-4 font-bold uppercase tracking-widest hover:bg-bronze hover:text-wootz-dark transition-all duration-300 mt-4">
+                        <button type="button" onclick="sendEmail()" class="w-full bg-bronze/10 border border-bronze text-bronze py-4 font-bold uppercase tracking-widest hover:bg-bronze hover:text-wootz-dark transition-all duration-300 mt-4">
                             <span class="lang-en">Establish Connection</span>
                             <span class="lang-ar">تأسيس الاتصال</span>
                         </button>
@@ -684,6 +688,26 @@
                 });
             });
         });
+
+           // ---------------- CONTACT FORM LOGIC ----------------
+        function sendEmail() {
+            const identifier = document.getElementById('contact-identifier').value;
+            const signal = document.getElementById('contact-signal').value;
+            
+            // Validation
+            if (!identifier || !signal) {
+                const isArabic = document.documentElement.getAttribute('lang') === 'ar';
+                alert(isArabic ? "يرجى إدخال المعرف والإشارة." : "Please input Identifier and Signal.");
+                return;
+            }
+
+            const subject = `Kattara Link Request: ${identifier}`;
+            const body = `System Identity: ${identifier}\nReturn Signal: ${signal}\n\n[Message Content / Transmission...]\n`;
+            
+            // Open Email Client
+            window.location.href = `mailto:info@kattarasystems.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        }
+
 
     </script>
 </body>
