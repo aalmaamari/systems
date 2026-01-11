@@ -175,7 +175,7 @@
 
                 <a href="#contact" class="px-6 py-2 border border-bronze text-bronze hover:bg-bronze hover:text-wootz-dark transition-all duration-300 uppercase text-xs tracking-widest font-bold">
                     <span class="lang-en">Contact Us</span>
-                    <span class="lang-ar text-base">تواصل معنا </span>
+                    <span class="lang-ar text-base">تواصل معنا</span>
                 </a>
             </div>
 
@@ -203,8 +203,8 @@
                     <span class="lang-ar">قيمنا</span>
                 </a>
                 <a href="#contact" class="text-bronze uppercase tracking-widest font-bold">
-                    <span class="lang-en">Initialize</span>
-                    <span class="lang-ar">بدء الاتصال</span>
+                    <span class="lang-en">Contact Us</span>
+                    <span class="lang-ar">تواصل معنا</span>
                 </a>
             </div>
         </div>
@@ -702,8 +702,7 @@
             }
 
             const subject = `Kattara Link Request: ${identifier}`;
-            const body = `System Identity: ${identifier}\nReturn Signal: ${signal}\n\n[Message Content / Transmission...]\n`;
-            
+            const body = `Hello Kattara,\nI hope you’re doing well. My name is ${identifier}, and I’m reaching out to request more information about your services.\n${signal}\nBest Regards\n${identifier}\n\n\n  مرحباً الكتارة للأنظمة\nأتمنى أن تكونوا بخير. اسمي ${identifier}، وأتواصل معكم لطلب مزيد من المعلومات حول خدماتكم.\n${signal}\nمع أطيب التحيات،\n${identifier}`;
             // Open Email Client
             window.location.href = `mailto:info@kattarasystems.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
         }
