@@ -701,7 +701,7 @@
                 return;
             }
 
-            const subject = `Kattara Link Request: ${identifier}`;
+            const subject = `Kattara information Request from ${identifier}`;
             const body = `Hello Kattara,\nI hope you’re doing well. My name is ${identifier}, and I’m reaching out to request more information about your services.\n${signal}\nBest Regards\n${identifier}\n\n\n  مرحباً الكتارة للأنظمة\nأتمنى أن تكونوا بخير. اسمي ${identifier}، وأتواصل معكم لطلب مزيد من المعلومات حول خدماتكم.\n${signal}\nمع أطيب التحيات،\n${identifier}`;
             // Open Email Client
             window.location.href = `mailto:info@kattarasystems.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
